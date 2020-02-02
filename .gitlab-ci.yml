@@ -1,0 +1,46 @@
+---
+
+image: clojure:openjdk-11-tools-deps
+
+stages:
+  - build
+  - publish
+
+services:
+  - name: docker:dind
+    command: ["--insecure-registry=docker.harrigan.online:8083", "--registry-mirror=https://docker.harrigan.online"]
+
+before_script:
+  - "git describe --match='rel/*' --exact-match && export PROJECT_VERSION=$(git describe --match='rel/*' | sed 's:^rel/::') || true"
+
+cache:
+  key: $CI_PROJECT_NAME
+
+build:
+  stage: build
+  script:
+    - clojure -A:uberjar startrek.jar
+  artifacts:
+    paths:
+      - startrek.jar
+    expire_in: 1 day
+  tags:
+    - build
+
+publish:docker:clojure:
+  stage: publish
+  dependencies:
+    - build
+  image: docker:latest
+  variables:
+    IMAGE: $DOCKER_REGISTRY:8083/$CI_PROJECT_PATH
+    JVM_TAG: 11.0.4
+  script:
+    - export TAG=$(echo -en ${CI_COMMIT_REF_NAME#rel/} | tr -c '[:alnum:]_.-' '-')
+    - export IMAGE_NAME="$IMAGE:$TAG"
+    - docker build --pull -f scripts/docker/Dockerfile -t $IMAGE_NAME --build-arg JVM_TAG=$JVM_TAG .
+    - docker push $IMAGE_NAME
+  only:
+    - /^rel\//
+  tags:
+    - publish

@@ -1,0 +1,15 @@
+{:paths ["src" "resources"]
+
+ :deps {org.clojure/clojure {:mvn/version "1.10.1"}
+        aero {:mvn/version "1.1.5"}
+        ch.qos.logback/logback-classic {:mvn/version "1.2.3" :exclusions [org.slf4j/slf4j-api]}
+        cheshire {:mvn/version "5.9.0"}
+        juxt/clip {:mvn/version "0.15.0"}
+        metosin/muuntaja {:mvn/version "0.6.6"}
+        metosin/reitit {:mvn/version "0.4.2"}
+        org.clojure/tools.cli {:mvn/version "0.4.2"}
+        org.clojure/tools.logging {:mvn/version "0.5.0"}
+        org.slf4j/jcl-over-slf4j {:mvn/version "1.7.30"}
+        org.slf4j/jul-to-slf4j {:mvn/version "1.7.30"}
+        org.slf4j/log4j-over-slf4j {:mvn/version "1.7.30"}
+        ring/ring-jetty-adapter {:mvn/version "1.8.0"}}}

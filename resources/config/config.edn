@@ -1,0 +1,4 @@
+{:components
+ {:router {:start (api.api/ring-handler)}
+  :api {:start (api.api/jetty-start (clip/ref :router) {:port 8080})
+        :stop api.api/jetty-stop}}}
