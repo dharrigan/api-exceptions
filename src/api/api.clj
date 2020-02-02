@@ -48,8 +48,8 @@
    {:validate rs/validate
     :data {:coercion rcs/coercion
            :muuntaja m/instance
-           :middleware [exception-middleware
-                        muuntaja/format-middleware
+           :middleware [muuntaja/format-middleware
+                        exception-middleware
                         parameters/parameters-middleware
                         coercion/coerce-exceptions-middleware
                         coercion/coerce-request-middleware
